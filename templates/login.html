@@ -1,12 +1,52 @@
 {% extends 'base.html' %}
 {% block body %}
     <div class="container">
+        <h1>Faça login ou crie sua conta</h1>
+        <hr>
         <div class="row">
             <div class="col">
-                <h2>Login</h2>
+                <legend>Login</legend>
+                <form action="" method="POST" class='border p-3'>
+                    <fieldset>
+                        <div class="from-group">
+                            {{ form_login.email.label(class='form-control-label') }}
+                            {{ form_login.email(class='form-control') }}
+                        </div>
+                        <div class="from-group">
+                            {{ form_login.password.label(class='form-control-label') }}
+                            {{ form_login.password(class='form-control') }}
+                        </div>
+                        <div class="from-group">
+                            {{ form_login.lembrar_dados(class='form-check-input') }}  
+                            {{ form_login.lembrar_dados.label(class='form-check-label') }}
+                        </div>
+                    </fieldset>
+                    {{ form_login.submit_login(class='btn btn-primary') }}
+                </form>
             </div>
             <div class="col">
-                <h2>Cadastrar</h2>
+                <legend>Cadastrar</legend> 
+                <form action="" method="POST" class='border p-3'>
+                    <fieldset>
+                        <div class="formgroup">
+                            {{ form_criarconta.username.label(class='form-control-label') }}
+                            {{ form_criarconta.username(class='form-control') }}
+                        </div>
+                        <div class="formgroup">
+                            {{ form_criarconta.email.label(class='form-control-label') }}
+                            {{ form_criarconta.email(class='form-control') }}
+                        </div>
+                        <div class="formgroup">
+                            {{ form_criarconta.password.label(class='form-control-label') }}
+                            {{ form_criarconta.password(class='form-control') }}
+                        </div>
+                        <div class="formgroup">
+                            {{ form_criarconta.confirm_pass.label(class='form-control-label') }}
+                            {{ form_criarconta.confirm_pass(class='form-control') }}
+                        </div>
+                    </fieldset>
+                    {{ form_criarconta.submit_criarconta(class='btn btn-danger m-2') }}
+                </form>
             </div>
         </div>  
     </div>
