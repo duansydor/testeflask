@@ -7,14 +7,36 @@
             <div class="col">
                 <legend>Login</legend>
                 <form action="" method="POST" class='border p-3'>
+                    {{form_login.csrf_token}}
                     <fieldset>
                         <div class="from-group">
-                            {{ form_login.email.label(class='form-control-label') }}
-                            {{ form_login.email(class='form-control') }}
+                            {{ form_login.email_login.label(class='form-control-label') }}
+                            {% if form_login.email_login.errors %}
+                                {{ form_login.email_login(class='form-control is-invalid') }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_login.email_login.errors%}
+                                        {{erro}}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_login.email_login(class='form-control') }}
+                            {% endif %}
+                            
                         </div>
                         <div class="from-group">
-                            {{ form_login.password.label(class='form-control-label') }}
-                            {{ form_login.password(class='form-control') }}
+
+                            {{ form_login.password_login.label(class='form-control-label') }}
+                            {% if form_login.password_login.errors %}
+                                {{ form_login.password_login(class='form-control is-invalid') }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_login.password_login.errors%}
+                                        {{erro}}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_login.password_login(class='form-control') }}
+                            {% endif %}
+
                         </div>
                         <div class="from-group">
                             {{ form_login.lembrar_dados(class='form-check-input') }}  
@@ -27,22 +49,65 @@
             <div class="col">
                 <legend>Cadastrar</legend> 
                 <form action="" method="POST" class='border p-3'>
+                    {{form_criarconta.csrf_token}}
                     <fieldset>
                         <div class="formgroup">
-                            {{ form_criarconta.username.label(class='form-control-label') }}
-                            {{ form_criarconta.username(class='form-control') }}
+                            
+                            <div class="from-group">
+                                {{ form_criarconta.username.label(class='form-control-label') }}
+                                {% if form_criarconta.username.errors %}
+                                    {{ form_criarconta.username(class='form-control is-invalid') }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in form_criarconta.username.errors%}
+                                            {{erro}}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form_criarconta.username(class='form-control') }}
+                                {% endif %}
+                                
+                            </div>
+                           
                         </div>
                         <div class="formgroup">
-                            {{ form_criarconta.email.label(class='form-control-label') }}
-                            {{ form_criarconta.email(class='form-control') }}
+                            <div class="from-group">
+                                {{ form_criarconta.email_criarconta.label(class='form-control-label') }}
+                                {% if form_criarconta.email_criarconta.errors %}
+                                    {{ form_criarconta.email_criarconta(class='form-control is-invalid') }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in form_criarconta.email_criarconta.errors%}
+                                            {{erro}}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form_criarconta.email_criarconta(class='form-control') }}
+                                {% endif %}
                         </div>
                         <div class="formgroup">
-                            {{ form_criarconta.password.label(class='form-control-label') }}
-                            {{ form_criarconta.password(class='form-control') }}
+                            {{ form_criarconta.password_criarconta.label(class='form-control-label') }}
+                            {% if form_criarconta.password_criarconta.errors %}
+                                {{ form_criarconta.password_criarconta(class='form-control is-invalid') }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in form_criarconta.password_criarconta.errors%}
+                                            {{erro}}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form_criarconta.password_criarconta(class='form-control') }}
+                                {% endif %}
                         </div>
                         <div class="formgroup">
                             {{ form_criarconta.confirm_pass.label(class='form-control-label') }}
-                            {{ form_criarconta.confirm_pass(class='form-control') }}
+                            {% if form_criarconta.confirm_pass.errors %}
+                                {{ form_criarconta.confirm_pass(class='form-control is-invalid') }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in form_criarconta.confirm_pass.errors%}
+                                            {{erro}}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form_criarconta.confirm_pass(class='form-control') }}
+                                {% endif %}
                         </div>
                     </fieldset>
                     {{ form_criarconta.submit_criarconta(class='btn btn-danger m-2') }}
