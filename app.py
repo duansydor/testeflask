@@ -8,6 +8,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comunidade.db'
 
 lista_clientes = ['usuA', 'usuB', 'usuB', 'usuC']
 
+database = SQLAlchemy(app)
+
 @app.route("/")
 def homepage():
     return render_template("homepage.html")
