@@ -25,18 +25,13 @@ def login():
     form_login = FormLogin()
 
     if form_criarconta.validate_on_submit() and 'submit_criarconta' in request.form:
-        flash(f'Cadastro feito com sucesso', 'alert-success')
+        #flash(f'Cadastro feito com sucesso', 'alert-success')
         return redirect(url_for('homepage'))
 
 
     if form_login.validate_on_submit() and 'submit_login' in request.form:
-        flash(f'Login feito com sucesso ', 'alert-success')
+        #flash(f'Login feito com sucesso ', 'alert-success')
         return redirect(url_for('homepage'))
-
-    if form_criarconta.validate_on_submit() and 'submit_criarconta' in request.form:
-        flash(f'Cadastro feito com sucesso', 'alert-success')
-        return redirect(url_for('homepage'))
-
 
     return render_template("login.html", form_criarconta = form_criarconta, form_login = form_login)
 
