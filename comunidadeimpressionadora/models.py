@@ -1,4 +1,4 @@
-from app import database
+from comunidadeimpressionadora import database
 from datetime import datetime
 class Usuario(database.Model):
     id = database.Column(database.Integer, primary_key = True)
