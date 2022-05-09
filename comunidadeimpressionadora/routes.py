@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from comunidadeimpressionadora import app, database, bcrypt
 from comunidadeimpressionadora.forms import FormCriarConta, FormLogin
 from comunidadeimpressionadora.models import Usuario
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user,login_required
 
 lista_clientes = ['usuA', 'usuB', 'usuB', 'usuC']
 
@@ -44,13 +44,16 @@ def login():
     return render_template("login.html", form_criarconta = form_criarconta, form_login = form_login)
 
 @app.route('/sair')
+@login_required
 def logout():
     logout_user()
     flash('Usuario desconectado','alert-success')
     return redirect(url_for('homepage'))
 @app.route('/post/criar')
+@login_required
 def criar_post():
     return render_template("criarpost.html")
 @app.route('/perfil')
+@login_required
 def perfil():
     return render_template("perfil.html")
