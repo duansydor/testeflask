@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from comunidadeimpressionadora import app, database, bcrypt
 from comunidadeimpressionadora.forms import FormCriarConta, FormLogin
 from comunidadeimpressionadora.models import Usuario
-
+from flask_login import login_user, logout_user, current_user
 
 lista_clientes = ['usuA', 'usuB', 'usuB', 'usuC']
 
@@ -33,7 +33,24 @@ def login():
 
 
     if form_login.validate_on_submit() and 'submit_login' in request.form:
-        flash(f'Login feito com sucesso ', 'alert-success')
-        return redirect(url_for('homepage'))
+        usuario = Usuario.query.filter_by(email=form_login.email_login.data).first()
+        if usuario and bcrypt.check_password_hash(usuario.password,form_login.password_login.data):
+            login_user(usuario, remember=form_login.lembrar_dados.data)
+            flash(f'Login feito com sucesso ', 'alert-success')
+            return redirect(url_for('homepage'))
+        else:
+            flash(f'Email ou senha invalidos', 'alert-danger')
 
     return render_template("login.html", form_criarconta = form_criarconta, form_login = form_login)
+
+@app.route('/sair')
+def logout():
+    logout_user()
+    flash('Usuario desconectado','alert-success')
+    return redirect(url_for('homepage'))
+@app.route('/post/criar')
+def criar_post():
+    return render_template("criarpost.html")
+@app.route('/perfil')
+def perfil():
+    return render_template("perfil.html")
