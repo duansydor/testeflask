@@ -5,7 +5,7 @@ from comunidadeimpressionadora.models import Usuario
 from flask_login import login_user, logout_user, current_user,login_required
 
 lista_clientes = ['usuA', 'usuB', 'usuB', 'usuC']
-
+redirects_seguros = ['/','/contatos','/clientes','/perfil','/login','/post/criar']
 @app.route("/")
 def homepage():
     return render_template("homepage.html")
@@ -27,7 +27,6 @@ def login():
                          password=senhacrypt)
         database.session.add(usuario)
         database.session.commit()
-
         flash(f'Cadastro feito com sucesso', 'alert-success')
         return redirect(url_for('homepage'))
 
@@ -37,7 +36,12 @@ def login():
         if usuario and bcrypt.check_password_hash(usuario.password,form_login.password_login.data):
             login_user(usuario, remember=form_login.lembrar_dados.data)
             flash(f'Login feito com sucesso ', 'alert-success')
-            return redirect(url_for('homepage'))
+            #verifica se possui algum redirecionamento next=?
+            par_next = request.args.get('next')
+            if par_next in redirects_seguros:
+                return redirect(par_next)
+            else:
+                return redirect(url_for('homepage'))
         else:
             flash(f'Email ou senha invalidos', 'alert-danger')
 
