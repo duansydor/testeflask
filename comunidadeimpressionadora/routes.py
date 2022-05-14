@@ -35,7 +35,7 @@ def login():
         usuario = Usuario.query.filter_by(email=form_login.email_login.data).first()
         if usuario and bcrypt.check_password_hash(usuario.password,form_login.password_login.data):
             login_user(usuario, remember=form_login.lembrar_dados.data)
-            flash(f'Login feito com sucesso ', 'alert-success')
+            flash('Login feito com sucesso {}'.format(usuario.username), 'alert-success')
             #verifica se possui algum redirecionamento next=?
             par_next = request.args.get('next')
             if par_next in redirects_seguros:
