@@ -57,7 +57,9 @@ def logout():
 @login_required
 def criar_post():
     return render_template("criarpost.html")
+
 @app.route('/perfil')
 @login_required
 def perfil():
-    return render_template("perfil.html")
+    foto_perfil = url_for('static', filename=f'fotos_perfil/{current_user.foto_perfil}')
+    return render_template("perfil.html", foto_perfil=foto_perfil)
