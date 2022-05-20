@@ -67,6 +67,14 @@ def perfil():
 @app.route('/perfil/editar', methods=['GET', 'POST'])
 @login_required
 def editar_perfil():
-    foto_perfil = url_for('static', filename=f'fotos_perfil/{current_user.foto_perfil}')
     form = FormEditarPerfil()
+
+    if form.validate_on_submit():
+        current_user.email = form.email.data
+        current_user.username = form.username.data
+        database.session.commit()
+        flash('usuario atualizado com sucesso', 'alert-success')
+        return redirect(url_for("perfil"))
+    foto_perfil = url_for('static', filename=f'fotos_perfil/{current_user.foto_perfil}')
+
     return render_template("editar_perfil.html",foto_perfil=foto_perfil, form=form)
