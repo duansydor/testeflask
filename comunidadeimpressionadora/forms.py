@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from comunidadeimpressionadora.models import Usuario
@@ -25,6 +26,7 @@ class FormLogin(FlaskForm):
 class FormEditarPerfil(FlaskForm):
     username = StringField('Usuario', validators = [DataRequired()])
     email = StringField('Email', validators = [DataRequired(), Email()])
+    foto_perfil = FileField('Editar foto', validators = [FileAllowed(['jpg','png'])])
     submit = SubmitField('Confirmar')
 
     def validate_email(self, email):
