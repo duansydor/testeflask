@@ -3,8 +3,72 @@
     <div class="container">
         <h1>Lista clientes</h1>
         {% for cliente in lista_clientes %}
-            <p>{{cliente}}</p>
-            <hr>
+            
+        <div class="container mt-5 d-flex justify-content-center">
+
+            <div class="card p-3">
+    
+                <div class="d-flex align-items-center">
+    
+                    <div class="image pe-2">
+                        <img class="rounded " width="200" src="{{url_for('static', filename='fotos_perfil/{}'.format(cliente.foto_perfil))}}" >
+                    </div>
+    
+                <div class="ml-3 w-100">
+                    
+                <h4 class="mb-0 mt-0">{{ cliente.username}}</h4>
+                <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+                    <div class="d-flex flex-column">
+    
+                        <span class="articles">Cursos</span>
+                        <span class="number1">
+                            {% if cliente.cursos != 'Não informado' and cliente.cursos !=''%}
+                                {{cursos}}
+                            {%else%}
+                                0 
+                            {% endif %}
+
+                        </span>
+                        
+                    </div>
+                    <div class="d-flex flex-column">
+    
+                        <span class="rating">Posts</span>
+                        <span class="number3">8.9</span>
+                        
+                    </div>
+                    
+                </div>    
+                </div>
+                
+                    
+                </div>
+            </div>
+            
+        </div>
+        <div class="row justify-content-center">
+            
+            <div class="col col-4 pd-4" style="text-align: center;">
+                <strong>
+                    Cursos
+                </strong>
+                <br>
+                {% if not cliente.cursos == '' %}
+                    {% for curso in cliente.cursos.split(';') %}
+                        {% if cliente.cursos != 'Não informado'%}
+                            <buttn type="button" class="btn btn-success mt-2" disabled>{{curso}}</buttn>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+        </div>
+
+
+
+
+
+
         {% endfor %}
     </div>
 {% endblock %}

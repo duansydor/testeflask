@@ -4,7 +4,6 @@ from comunidadeimpressionadora.forms import FormCriarConta, FormLogin, FormEdita
 from comunidadeimpressionadora.models import Usuario
 from flask_login import login_user, logout_user, current_user,login_required
 
-lista_clientes = ['usuA', 'usuB', 'usuB', 'usuC']
 redirects_seguros = ['/','/contatos','/clientes','/perfil','/login','/post/criar']
 @app.route("/")
 def homepage():
@@ -14,7 +13,10 @@ def contatos():
     return render_template("contato.html")
 @app.route("/clientes")
 def clientes():
-    return render_template("clientes.html", lista_clientes=lista_clientes)
+    lista_clientes = Usuario.query.all()
+    for cliente in lista_clientes:
+        cursos = contar_cursos(cliente)
+    return render_template("clientes.html", lista_clientes=lista_clientes,cursos=cursos)
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form_criarconta = FormCriarConta()
@@ -58,23 +60,41 @@ def logout():
 def criar_post():
     return render_template("criarpost.html")
 
+def contar_cursos(user):
+    lista_cursos = user.cursos.split(';')
+    cursos = 0
+    if not user.cursos == '':
+        cursos = len(lista_cursos)
+    else:
+        cursos = 0
+    return cursos
+
 @app.route('/perfil')
 @login_required
 def perfil():
     foto_perfil = url_for('static', filename=f'fotos_perfil/{current_user.foto_perfil}')
-    return render_template("perfil.html", foto_perfil=foto_perfil)
+    cursos = contar_cursos(current_user)
+    return render_template("perfil.html", foto_perfil=foto_perfil,cursos=cursos)
+def atualizar_cursos(form):
+    cursos = []
+    for campo in form:
+        if 'curso_' in campo.name and campo.data == True:
+            cursos.append(campo.label.text)
+    return ';'.join(cursos)
 
 @app.route('/perfil/editar', methods=['GET', 'POST'])
 @login_required
 def editar_perfil():
     form = FormEditarPerfil()
-
+    cursos = contar_cursos(current_user)
     if form.validate_on_submit():
         current_user.email = form.email.data
         current_user.username = form.username.data
+
+        current_user.cursos = atualizar_cursos(form)
         database.session.commit()
         flash('usuario atualizado com sucesso', 'alert-success')
         return redirect(url_for("perfil"))
     foto_perfil = url_for('static', filename=f'fotos_perfil/{current_user.foto_perfil}')
 
-    return render_template("editar_perfil.html",foto_perfil=foto_perfil, form=form)
+    return render_template("editar_perfil.html",foto_perfil=foto_perfil, form=form,cursos=cursos)
