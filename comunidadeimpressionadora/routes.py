@@ -1,13 +1,14 @@
 from flask import render_template, redirect, url_for, flash, request
 from comunidadeimpressionadora import app, database, bcrypt
-from comunidadeimpressionadora.forms import FormCriarConta, FormLogin, FormEditarPerfil
-from comunidadeimpressionadora.models import Usuario
+from comunidadeimpressionadora.forms import FormCriarConta, FormLogin, FormEditarPerfil, FormCriarPost
+from comunidadeimpressionadora.models import Usuario, Post
 from flask_login import login_user, logout_user, current_user,login_required
 
 redirects_seguros = ['/','/contatos','/clientes','/perfil','/login','/post/criar']
 @app.route("/")
 def homepage():
-    return render_template("homepage.html")
+    posts = Post.query.order_by(Post.id.desc())
+    return render_template("homepage.html", posts = posts)
 @app.route("/contatos")
 def contatos():
     return render_template("contato.html")
@@ -55,10 +56,19 @@ def logout():
     logout_user()
     flash('Usuario desconectado','alert-success')
     return redirect(url_for('homepage'))
-@app.route('/post/criar')
+
+
+@app.route('/post/criar',methods=['GET', 'POST'])
 @login_required
 def criar_post():
-    return render_template("criarpost.html")
+    form = FormCriarPost()
+    if form.validate_on_submit():
+        post = Post(titulo = form.titulo.data, corpo = form.corpo.data, autor = current_user)
+        database.session.add(post)
+        database.session.commit()
+        flash('Post criado com sucesso','alert-success')
+        return redirect(url_for('homepage'))
+    return render_template("criarpost.html", form=form)
 
 def contar_cursos(user):
     lista_cursos = user.cursos.split(';')

@@ -1,6 +1,48 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="container">
-        <h1>Criar post</h1>
-    </div>
+<div class="container">
+    <hr>
+    <div class="row">
+        <div class="col">
+            <legend>Criar Post</legend>
+            <form action="" method="POST" class='border p-3' enctype="multipart/form-data">
+                {{form.csrf_token}}
+                <fieldset>
+                    <div class="from-group">
+                        {{ form.titulo.label(class='form-control-label') }}
+                        {% if form.titulo.errors %}
+                            {{ form.titulo(class='form-control is-invalid') }}
+                            <div class="invalid-feedback">
+                                {% for erro in form.titulo.errors%}
+                                    {{erro}}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.titulo(class='form-control') }}
+                        {% endif %}
+                        
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="from-group">
+                        {{ form.corpo.label(class='form-control-label') }}
+                        {% if form.corpo.errors %}
+                            {{ form.corpo(class='form-control is-invalid') }}
+                            <div class="invalid-feedback">
+                                {% for erro in form.corpo.errors%}
+                                    {{erro}}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.corpo(class='form-control') }}
+                        {% endif %}
+                        
+                    </div>
+                </fieldset>
+                <br>
+                {{ form.botao_submit(class='btn btn-primary') }}
+            </form>
+        </div>
+    </div>  
+</div>
 {% endblock %}
