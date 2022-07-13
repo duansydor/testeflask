@@ -3,7 +3,9 @@ from comunidadeimpressionadora import app, database, bcrypt
 from comunidadeimpressionadora.forms import FormCriarConta, FormLogin, FormEditarPerfil, FormCriarPost
 from comunidadeimpressionadora.models import Usuario, Post
 from flask_login import login_user, logout_user, current_user,login_required
-
+import secrets
+import os
+from PIL import Image
 redirects_seguros = ['/','/contatos','/clientes','/perfil','/login','/post/criar']
 @app.route("/")
 def homepage():
@@ -91,7 +93,17 @@ def atualizar_cursos(form):
         if 'curso_' in campo.name and campo.data == True:
             cursos.append(campo.label.text)
     return ';'.join(cursos)
+def salvar_imagem(imagem):
+    codigo = secrets.token_hex(8)
+    nome_arq, ext_arq = os.path.splitext(imagem.filename)
+    nome_completo = nome_arq + codigo + ext_arq
+    caminho_completo = os.path.join(app.root_path,'static/fotos_perfil',nome_completo)
 
+    tamanho = (200,200)
+    imagem_reduzida = Image.open(imagem)
+    imagem_reduzida.thumbnail(tamanho)
+    imagem_reduzida.save(caminho_completo)
+    return nome_completo
 @app.route('/perfil/editar', methods=['GET', 'POST'])
 @login_required
 def editar_perfil():
@@ -100,7 +112,9 @@ def editar_perfil():
     if form.validate_on_submit():
         current_user.email = form.email.data
         current_user.username = form.username.data
-
+        if form.foto_perfil.data:
+            nome_imagem = salvar_imagem(form.foto_perfil.data)
+            current_user.foto_perfil = nome_imagem
         current_user.cursos = atualizar_cursos(form)
         database.session.commit()
         flash('usuario atualizado com sucesso', 'alert-success')
