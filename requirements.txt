@@ -42,6 +42,7 @@ Pygments==2.7.1
 PyGObject==3.40.1
 PyJWT==1.7.1
 pyOpenSSL==22.0.0
+python-apt==2.2.1
 PyYAML==5.3.1
 requests==2.27.1
 SecretStorage==3.3.1
